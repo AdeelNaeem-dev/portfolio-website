@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adeel Naeem — AI &amp; Automation Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #ECE9E2;
+    --surface: #F6F4EF;
+    --ink: #23262A;
+    --ink-soft: #5B5D57;
+    --line: #CFC9BA;
+    --sage: #5F7264;
+    --sage-soft: #DCE3DA;
+    --brass: #93764F;
+    --brass-soft: #E8DFCC;
+    --radius: 3px;
+    --max: 1120px;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ---------- AMBIENT BACKGROUND ---------- */
+  .ambient{
+    position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+  }
+  .blob{
+    position: absolute; border-radius: 50%; filter: blur(70px);
+    opacity: .35; will-change: transform;
+  }
+  .blob.b1{
+    width: 480px; height: 480px; background: var(--sage-soft);
+    top: -160px; left: -120px;
+    animation: floatBlob1 22s ease-in-out infinite;
+  }
+  .blob.b2{
+    width: 420px; height: 420px; background: var(--brass-soft);
+    top: 40%; right: -160px;
+    animation: floatBlob2 26s ease-in-out infinite;
+  }
+  .blob.b3{
+    width: 360px; height: 360px; background: var(--sage-soft);
+    bottom: -140px; left: 30%;
+    animation: floatBlob3 30s ease-in-out infinite;
+  }
+  @keyframes floatBlob1{
+    0%,100%{ transform: translate(0,0) scale(1); }
+    50%{ transform: translate(60px, 90px) scale(1.15); }
+  }
+  @keyframes floatBlob2{
+    0%,100%{ transform: translate(0,0) scale(1); }
+    50%{ transform: translate(-70px, 60px) scale(1.1); }
+  }
+  @keyframes floatBlob3{
+    0%,100%{ transform: translate(0,0) scale(1); }
+    50%{ transform: translate(40px, -50px) scale(1.08); }
+  }
+
+  @keyframes wordIn{
+    from{ transform: translateY(112%) rotate(3deg); opacity: 0; }
+    to{ transform: translateY(0) rotate(0); opacity: 1; }
+  }
+  @keyframes fadeUp{
+    from{ opacity: 0; transform: translateY(16px); }
+    to{ opacity: 1; transform: translateY(0); }
+  }
+  @keyframes dotPulse{
+    0%{ box-shadow: 0 0 0 0 rgba(95,114,100,.55); }
+    70%{ box-shadow: 0 0 0 9px rgba(95,114,100,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(95,114,100,0); }
+  }
+  @keyframes ringPing{
+    0%{ transform: scale(.6); opacity: .9; }
+    100%{ transform: scale(2.6); opacity: 0; }
+  }
+  @keyframes popNode{
+    from{ transform: scale(0); opacity: 0; }
+    to{ transform: scale(1); opacity: 1; }
+  }
+
+  ::selection{ background: var(--sage); color: var(--surface); }
+
+  a{ color: inherit; text-decoration: none; }
+
+  .wrap{ max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+
+  .eyebrow{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sage);
+  }
+
+  h1, h2, h3{ font-family: 'Fraunces', serif; font-weight: 500; letter-spacing: -0.01em; }
+
+  /* ---------- NAV ---------- */
+  header{
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(236, 233, 226, 0.86);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    max-width: var(--max);
+    margin: 0 auto;
+  }
+  .logo{
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo .dot{
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--sage);
+    display: inline-block;
+    animation: dotPulse 2.4s ease-out infinite;
+  }
+  .navlinks{ display: flex; gap: 34px; list-style: none; }
+  .navlinks a{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    position: relative;
+    padding-bottom: 3px;
+    transition: color .2s ease;
+  }
+  .navlinks a::after{
+    content: '';
+    position: absolute; left:0; bottom: 0;
+    width: 0; height: 1px;
+    background: var(--sage);
+    transition: width .25s ease;
+  }
+  .navlinks a:hover, .navlinks a.active{ color: var(--ink); }
+  .navlinks a:hover::after, .navlinks a.active::after{ width: 100%; }
+  .navburger{ display:none; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding: 168px 0 96px;
+    position: relative;
+  }
+  .hero .eyebrow{ margin-bottom: 18px; display:flex; align-items:center; gap:10px; opacity:0; animation: fadeUp .7s ease forwards .1s; }
+  .hero .eyebrow::before{
+    content:'';
+    width: 26px; height: 1px;
+    background: var(--sage);
+  }
+  .hero h1{
+    font-size: clamp(38px, 5.4vw, 68px);
+    line-height: 1.06;
+    max-width: 17ch;
+    color: var(--ink);
+  }
+  .hero h1 em{
+    font-style: italic;
+    color: var(--sage);
+  }
+  .rline{ display: block; overflow: hidden; padding-bottom: .12em; }
+  .rword{
+    display: inline-block;
+    transform: translateY(112%) rotate(3deg);
+    opacity: 0;
+    animation: wordIn .75s cubic-bezier(.22,.8,.24,1) forwards;
+    animation-delay: calc(var(--d) * 0.05s + 0.25s);
+  }
+  .hero p.lead{
+    margin-top: 22px;
+    max-width: 46ch;
+    font-size: 17px;
+    color: var(--ink-soft);
+    opacity: 0;
+    animation: fadeUp .8s ease forwards 1.05s;
+  }
+  .hero-cta{ display:flex; gap: 14px; margin-top: 34px; flex-wrap: wrap; opacity:0; animation: fadeUp .8s ease forwards 1.25s; }
+
+  /* ---------- HERO GRID / PHOTO ---------- */
+  .hero-grid{
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .hero-photo{
+    opacity: 0;
+    animation: fadeUp .9s ease forwards .55s;
+    justify-self: end;
+    width: 100%;
+    max-width: 380px;
+  }
+  .photo-frame{
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1.5px solid var(--brass);
+    overflow: hidden;
+    animation: floatPhoto 6s ease-in-out infinite;
+  }
+  .photo-frame img{
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(12%) contrast(1.03);
+    transition: transform .5s ease, filter .5s ease;
+  }
+  .hero-photo:hover .photo-frame img{ transform: scale(1.06); filter: grayscale(0%) contrast(1.03); }
+  .hero-photo{ position: relative; }
+  .hero-photo::before{
+    content: '';
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    border: 1px dashed var(--line);
+    animation: spinRing 40s linear infinite;
+    pointer-events: none;
+  }
+  .photo-frame .pdot-accent{
+    position: absolute;
+    right: 6%; bottom: 6%;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--brass);
+    border: 2px solid var(--surface);
+    z-index: 2;
+  }
+  @keyframes spinRing{ to{ transform: rotate(360deg); } }
+  .photo-caption{
+    margin-top: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .06em;
+    color: var(--ink-soft);
+    text-align: right;
+  }
+  @keyframes floatPhoto{
+    0%,100%{ transform: translateY(0); }
+    50%{ transform: translateY(-9px); }
+  }
+  .btn{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 13px 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--ink);
+    transition: background .2s ease, border-color .2s ease, color .2s ease, transform .12s ease;
+    display: inline-block;
+    will-change: transform;
+  }
+  .btn.primary{ background: var(--ink); color: var(--surface); }
+  .btn.primary:hover{ background: var(--sage); border-color: var(--sage); }
+  .btn.ghost{ border-color: var(--line); color: var(--ink); }
+  .btn.ghost:hover{ border-color: var(--ink); }
+
+  /* ---------- PIPELINE SIGNATURE ---------- */
+  .pipeline{
+    margin-top: 78px;
+    border-top: 1px solid var(--line);
+    padding-top: 34px;
+    opacity: 0;
+    animation: fadeUp .8s ease forwards 1.5s;
+  }
+  .pipeline-label{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+  }
+  .pipeline svg{ width: 100%; height: auto; display:block; overflow: visible; }
+  .pnode-label{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    fill: var(--ink);
+  }
+  .pnode-sub{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    fill: var(--ink-soft);
+  }
+  .pline{
+    fill:none;
+    stroke: var(--line);
+    stroke-width: 1.4;
+    stroke-dasharray: 6 6;
+  }
+  .pline-draw{
+    fill:none;
+    stroke: var(--sage);
+    stroke-width: 1.4;
+    stroke-dasharray: 620;
+    stroke-dashoffset: 620;
+    animation: draw 2.2s ease forwards 1.7s;
+  }
+  @keyframes draw{ to{ stroke-dashoffset: 0; } }
+  .pnode{ fill: var(--surface); stroke: var(--brass); stroke-width: 1.4; transform-box: fill-box; transform-origin: center; opacity: 0; animation: popNode .5s cubic-bezier(.3,1.4,.4,1) forwards; }
+  .pdot{ fill: var(--brass); transform-box: fill-box; transform-origin: center; opacity: 0; animation: popNode .5s cubic-bezier(.3,1.4,.4,1) forwards; }
+  .pgroup:nth-of-type(1) .pnode, .pgroup:nth-of-type(1) .pdot{ animation-delay: 1.8s; }
+  .pgroup:nth-of-type(2) .pnode, .pgroup:nth-of-type(2) .pdot{ animation-delay: 2.35s; }
+  .pgroup:nth-of-type(3) .pnode, .pgroup:nth-of-type(3) .pdot{ animation-delay: 2.9s; }
+  .pgroup:nth-of-type(4) .pnode, .pgroup:nth-of-type(4) .pdot{ animation-delay: 3.45s; }
+  .pgroup .pnode-label, .pgroup .pnode-sub{ opacity: 0; animation: fadeUp .5s ease forwards; }
+  .pgroup:nth-of-type(1) .pnode-label, .pgroup:nth-of-type(1) .pnode-sub{ animation-delay: 2s; }
+  .pgroup:nth-of-type(2) .pnode-label, .pgroup:nth-of-type(2) .pnode-sub{ animation-delay: 2.55s; }
+  .pgroup:nth-of-type(3) .pnode-label, .pgroup:nth-of-type(3) .pnode-sub{ animation-delay: 3.1s; }
+  .pgroup:nth-of-type(4) .pnode-label, .pgroup:nth-of-type(4) .pnode-sub{ animation-delay: 3.65s; }
+  .pflow{ fill: var(--sage); opacity: 0; animation: fadeUp .3s ease forwards 3.9s; }
+
+  /* ---------- SECTION SHARED ---------- */
+  section{ padding: 108px 0; border-top: 1px solid var(--line); }
+  .section-head{ margin-bottom: 52px; max-width: 60ch; }
+  .section-head h2{ font-size: clamp(28px, 3.4vw, 40px); margin-top: 10px; }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 64px;
+    align-items: start;
+  }
+  .about-grid p{ color: var(--ink-soft); font-size: 16px; margin-bottom: 16px; max-width: 56ch; }
+  .about-grid p strong{ color: var(--ink); font-weight: 600; }
+  .facts{ display:flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); }
+  .fact{
+    display:flex; justify-content: space-between; align-items: baseline;
+    padding: 16px 0; border-bottom: 1px solid var(--line);
+  }
+  .fact .k{ font-family:'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .05em; }
+  .fact .v{ font-family: 'Fraunces', serif; font-size: 20px; color: var(--sage); }
+
+  /* ---------- SKILLS (as pipeline stages) ---------- */
+  .stages{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .stage{
+    background: var(--surface);
+    padding: 28px 22px;
+  }
+  .stage .idx{ font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--brass); margin-bottom: 12px; }
+  .stage h3{ font-size: 19px; margin-bottom: 14px; }
+  .stage ul{ list-style: none; }
+  .stage li{
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    padding: 7px 0;
+    border-top: 1px dashed var(--line);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .stage li:first-of-type{ border-top: none; }
+
+  /* ---------- PROJECTS ---------- */
+  .projects{ display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; perspective: 1200px; }
+  .card{
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 30px;
+    transition: transform .18s ease, border-color .25s ease, box-shadow .25s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
+    overflow: hidden;
+  }
+  .card::before{
+    content:'';
+    position: absolute; inset: 0;
+    background: radial-gradient(220px circle at var(--mx,50%) var(--my,50%), var(--sage-soft), transparent 70%);
+    opacity: 0;
+    transition: opacity .3s ease;
+    pointer-events: none;
+  }
+  .card:hover::before{ opacity: .55; }
+  .card:hover{ border-color: var(--sage); box-shadow: 0 18px 34px -22px rgba(35,38,42,.35); }
+  .card::after{ content: none; }
+  .card .corner{ position:absolute; width: 12px; height: 12px; pointer-events: none; }
+  .card .corner.tl{ top: -1px; left: -1px; border-top: 1.4px solid var(--brass); border-left: 1.4px solid var(--brass); }
+  .card .corner.br{ bottom: -1px; right: -1px; border-bottom: 1.4px solid var(--brass); border-right: 1.4px solid var(--brass); }
+  .card .tags{ display:flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; position: relative; }
+  .tag{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    background: var(--sage-soft);
+    color: var(--sage);
+    padding: 4px 9px;
+    border-radius: 2px;
+  }
+  .card h3{ font-size: 21px; margin-bottom: 10px; }
+  .card p{ color: var(--ink-soft); font-size: 14.5px; margin-bottom: 18px; }
+  .card .metric{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--brass);
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+  }
+
+  /* ---------- EXPERIENCE ---------- */
+  .timeline{ position: relative; padding-left: 32px; }
+  .timeline::before{
+    content:''; position: absolute; left: 4px; top: 6px; bottom: 6px;
+    width: 1px; background-image: linear-gradient(var(--line) 60%, rgba(0,0,0,0) 0%);
+    background-size: 1px 8px;
+  }
+  .titem{ position: relative; padding-bottom: 44px; }
+  .titem:last-child{ padding-bottom: 0; }
+  .titem::before{
+    content:''; position: absolute; left: -32px; top: 5px;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--surface); border: 1.5px solid var(--brass);
+    z-index: 2;
+  }
+  .titem::after{
+    content:''; position: absolute; left: -32px; top: 5px;
+    width: 9px; height: 9px; border-radius: 50%;
+    border: 1.5px solid var(--brass);
+    opacity: 0;
+  }
+  .stagger-group.in .titem::after{ animation: ringPing 1.3s ease-out .3s; }
+  .titem .when{ font-family:'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; display:block; }
+  .titem h3{ font-size: 20px; margin-bottom: 6px; }
+  .titem .role{ color: var(--sage); font-size: 13.5px; font-family: 'IBM Plex Mono', monospace; margin-bottom: 10px; display:block; }
+  .titem p{ color: var(--ink-soft); font-size: 14.5px; max-width: 62ch; }
+
+  /* ---------- CONTACT ---------- */
+  .contact{ display:grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .contact h2{ font-size: clamp(30px, 4vw, 46px); max-width: 12ch; }
+  .contact p{ color: var(--ink-soft); margin-top: 18px; max-width: 40ch; }
+  .contact-links{ display: flex; flex-direction: column; }
+  .clink{
+    display:flex; justify-content: space-between; align-items:center;
+    padding: 20px 4px; border-bottom: 1px solid var(--line);
+    font-family: 'Fraunces', serif; font-size: 21px;
+    transition: color .2s ease, padding-left .2s ease;
+  }
+  .clink:first-child{ border-top: 1px solid var(--line); }
+  .clink span.arrow{ font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--brass); transition: transform .2s ease; }
+  .clink:hover{ color: var(--sage); padding-left: 10px; }
+  .clink:hover span.arrow{ transform: translateX(4px); }
+
+  footer{
+    border-top: 1px solid var(--line);
+    padding: 28px 0;
+  }
+  footer .wrap{ display:flex; justify-content: space-between; align-items:center; }
+  footer p{ font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--ink-soft); }
+
+  /* reveal on scroll */
+  .reveal{ opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity: 1; transform: translateY(0); }
+
+  .stagger-group > *{
+    opacity: 0; transform: translateY(16px);
+    transition: opacity .55s ease, transform .55s ease;
+  }
+  .stagger-group.in > *{ opacity: 1; transform: translateY(0); }
+  .stagger-group > *:nth-child(1){ transition-delay: .02s; }
+  .stagger-group > *:nth-child(2){ transition-delay: .12s; }
+  .stagger-group > *:nth-child(3){ transition-delay: .22s; }
+  .stagger-group > *:nth-child(4){ transition-delay: .32s; }
+
+  @media (max-width: 860px){
+    .navlinks{ display:none; }
+    .about-grid, .contact, .stages, .projects{ grid-template-columns: 1fr; }
+    .hero{ padding-top: 140px; }
+    .hero-grid{ grid-template-columns: 1fr; gap: 32px; }
+    .hero-photo{ justify-self: center; max-width: 260px; order: -1; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    html{ scroll-behavior: auto; }
+  }
+
+  :focus-visible{ outline: 2px solid var(--sage); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<div class="ambient" aria-hidden="true">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+</div>
+
+
+<header>
+  <nav>
+    <div class="logo"><span class="dot"></span>Adeel Naeem</div>
+    <ul class="navlinks">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" style="border-top:none;">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <p class="eyebrow">AI &amp; Automation Engineer</p>
+          <h1><span class="rline"><span class="rword" style="--d:0">I</span> <span class="rword" style="--d:1">build</span> <span class="rword" style="--d:2">systems</span> <span class="rword" style="--d:3">that</span> <span class="rword" style="--d:4"><em>run</em></span> <span class="rword" style="--d:5"><em>themselves</em></span> <span class="rword" style="--d:6">—</span></span><span class="rline"><span class="rword" style="--d:7">and</span> <span class="rword" style="--d:8">know</span> <span class="rword" style="--d:9">when</span> <span class="rword" style="--d:10">to</span> <span class="rword" style="--d:11">ask</span> <span class="rword" style="--d:12">for</span> <span class="rword" style="--d:13">help.</span></span></h1>
+          <p class="lead">I'm an AI &amp; Automation Engineer at <strong>Techup.AI</strong>, building agentic workflows, RAG pipelines, and n8n-driven automation that cut manual work down to a click.</p>
+          <div class="hero-cta">
+            <a href="#work" class="btn primary">View selected work</a>
+            <a href="#contact" class="btn ghost">Get in touch</a>
+          </div>
+        </div>
+
+        <div class="hero-photo">
+          <div class="photo-frame">
+            <img id="profileImg" src="profile1.png" alt="Adeel Naeem" loading="lazy" onerror="handleImgError(this)">
+            <span class="pdot-accent"></span>
+          </div>
+          <p class="photo-caption"> adeel naeem</p>
+        </div>
+      </div>
+
+      <div class="pipeline">
+        <p class="pipeline-label"> current pipeline — how a task moves through my systems</p>
+        <svg viewBox="0 0 1000 140" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Diagram showing a pipeline of four stages: Ingest, Reason, Act, Deploy, connected in sequence">
+          <path class="pline" d="M110,70 H890"/>
+          <path id="pflowpath" class="pline-draw" d="M110,70 H890"/>
+
+          <g class="pgroup">
+            <circle class="pnode" cx="110" cy="70" r="26"/>
+            <circle class="pdot" cx="110" cy="70" r="3.5"/>
+            <text class="pnode-label" x="110" y="118" text-anchor="middle">INGEST</text>
+            <text class="pnode-sub" x="110" y="20" text-anchor="middle">apis / webhooks</text>
+          </g>
+          <g class="pgroup">
+            <circle class="pnode" cx="370" cy="70" r="26"/>
+            <circle class="pdot" cx="370" cy="70" r="3.5"/>
+            <text class="pnode-label" x="370" y="118" text-anchor="middle">REASON</text>
+            <text class="pnode-sub" x="370" y="20" text-anchor="middle">LLM + RAG</text>
+          </g>
+          <g class="pgroup">
+            <circle class="pnode" cx="630" cy="70" r="26"/>
+            <circle class="pdot" cx="630" cy="70" r="3.5"/>
+            <text class="pnode-label" x="630" y="118" text-anchor="middle">ACT</text>
+            <text class="pnode-sub" x="630" y="20" text-anchor="middle">agents / n8n</text>
+          </g>
+          <g class="pgroup">
+            <circle class="pnode" cx="890" cy="70" r="26"/>
+            <circle class="pdot" cx="890" cy="70" r="3.5"/>
+            <text class="pnode-label" x="890" y="118" text-anchor="middle">DEPLOY</text>
+            <text class="pnode-sub" x="890" y="20" text-anchor="middle">infra / storage</text>
+          </g>
+
+          <circle class="pflow" r="5">
+            <animateMotion dur="3.2s" begin="4s" repeatCount="indefinite" path="M110,70 H890"/>
+          </circle>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap about-grid">
+      <div class="reveal">
+        <p class="eyebrow">About</p>
+        <h2 style="margin-bottom:22px;">AI graduate building agentic systems that actually ship.</h2>
+        <p>I'm an <strong>AI &amp; Automation Engineer</strong> at Techup.AI, with a BS in Artificial Intelligence from NUML. My focus is agentic workflows, RAG architecture, and event-driven automation — using tools like LangChain and n8n to turn tedious, manual processes into pipelines that run themselves.</p>
+        <p>I previously interned at CodeCelix (NASTP), where I built an LLM-powered pipeline that auto-generated structured business proposals and pitch decks, cutting manual creation time by roughly 70%. Since then I've kept building — multi-agent search systems, RAG chatbots, and full-stack automation platforms.</p>
+        <p>Based in Rawalpindi, Pakistan.</p>
+      </div>
+      <div class="stagger-group facts">
+        <div class="fact"><span class="k">Current role</span><span class="v">AI &amp; Automation Eng.</span></div>
+        <div class="fact"><span class="k">Manual time cut</span><span class="v" data-count="70" data-suffix="%">0%</span></div>
+        <div class="fact"><span class="k">Core stack</span><span class="v">Python · LangChain</span></div>
+        <div class="fact"><span class="k">Based in</span><span class="v">Rawalpindi, PK</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS AS PIPELINE STAGES -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Capabilities</p>
+        <h2>Everything I bring, organized the way I build it.</h2>
+      </div>
+      <div class="stages stagger-group">
+        <div class="stage">
+          <div class="idx">01 / Ingest</div>
+          <h3>Data &amp; Interfaces</h3>
+          <ul>
+            <li>REST API integration</li>
+            <li>Webhook orchestration</li>
+            <li>Event-driven architecture</li>
+            <li>Document ingestion &amp; chunking</li>
+          </ul>
+        </div>
+        <div class="stage">
+          <div class="idx">02 / Reason</div>
+          <h3>Models &amp; Logic</h3>
+          <ul>
+            <li>LLMs &amp; Generative AI</li>
+            <li>RAG architecture (FAISS)</li>
+            <li>LangChain</li>
+            <li>Prompt engineering</li>
+          </ul>
+        </div>
+        <div class="stage">
+          <div class="idx">03 / Act</div>
+          <h3>Execution</h3>
+          <ul>
+            <li>Agentic workflows</li>
+            <li>Multi-agent orchestration</li>
+            <li>n8n automation</li>
+            <li>Python, Bash, FastAPI</li>
+            <li>React</li>
+          </ul>
+        </div>
+        <div class="stage">
+          <div class="idx">04 / Deploy</div>
+          <h3>Infra &amp; Storage</h3>
+          <ul>
+            <li>MongoDB &amp; Supabase</li>
+            <li>SQL</li>
+            <li>Streamlit &amp; HF Spaces</li>
+            <li>Git &amp; GitHub</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="work">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Selected Work</p>
+        <h2>A few systems worth pointing at.</h2>
+      </div>
+      <div class="projects stagger-group">
+        <div class="card"><span class="corner tl"></span><span class="corner br"></span>
+          <div class="tags"><span class="tag">n8n</span><span class="tag">Agents</span></div>
+          <h3>AI Property Assistant</h3>
+          <p>A multi-agent property search system built in n8n, using Groq LLM for intent and entity extraction routed through a validation pipeline, with a cache-decision node and a webhook-driven Switch node for dynamic multi-path routing.</p>
+          <div class="metric">→ real-time weather enrichment via OpenWeatherMap API</div>
+        </div>
+        <div class="card"><span class="corner tl"></span><span class="corner br"></span>
+          <div class="tags"><span class="tag">RAG</span><span class="tag">LangChain</span></div>
+          <h3>NUML RAG Chatbot</h3>
+          <p>A retrieval-augmented chatbot built with LangChain, FAISS vector indexing, and HuggingFace embeddings for fast, context-aware answers from NUML's institutional documents — full ingestion-to-retrieval pipeline.</p>
+          <div class="metric">→ deployed on Hugging Face Spaces with Streamlit UI</div>
+        </div>
+        <div class="card"><span class="corner tl"></span><span class="corner br"></span>
+          <div class="tags"><span class="tag">Multimodal</span><span class="tag">Full-Stack</span></div>
+          <h3>EmpathyMD</h3>
+          <p>An AI-powered doctor training system pipelining LangChain patient simulation, real-time DeepFace facial analysis, and a custom-trained speech emotion model into live trainee feedback — React, FastAPI, and MongoDB end-to-end.</p>
+          <div class="metric">→ custom speech-emotion model trained from scratch</div>
+        </div>
+        <div class="card"><span class="corner tl"></span><span class="corner br"></span>
+          <div class="tags"><span class="tag">React</span><span class="tag">EdTech</span></div>
+          <h3>Hudhud</h3>
+          <p>A React-based web application built for an Uzbek client, helping Uzbek speakers learn English through structured, interactive lessons — designed, built, and deployed end-to-end.</p>
+          <div class="metric">→ deployed and live for Uzbek learners</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Experience</p>
+        <h2>Where I've built this.</h2>
+      </div>
+      <div class="timeline stagger-group">
+        <div class="titem">
+          <span class="when">Present</span>
+          <h3>AI &amp; Automation Engineer</h3>
+          <span class="role">Techup.AI</span>
+          <p>Building agentic workflows and LLM-powered automation pipelines, applying RAG architecture, webhook-driven orchestration, and REST API integration to streamline business processes.</p>
+        </div>
+        <div class="titem">
+          <span class="when">Aug 2025 — Oct 2025</span>
+          <h3>AI Intern</h3>
+          <span class="role">CodeCelix (NASTP), Artificial Intelligence Department</span>
+          <p>Developed an LLM-powered agentic pipeline that auto-generated structured business proposals and pitch decks across 5+ business domains, cutting manual creation time by ~70%. Designed modular, reusable pipeline architecture for rapid deployment across new use cases.</p>
+        </div>
+        <div class="titem">
+          <span class="when">2022 — 2026</span>
+          <h3>BS in Artificial Intelligence</h3>
+          <span class="role">National University of Modern Languages (NUML), Islamabad</span>
+          <p>Coursework and independent projects spanning RAG systems, multi-agent orchestration, and applied machine learning.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap contact">
+      <div class="reveal">
+        <p class="eyebrow">Contact</p>
+        <h2>Let's automate something worth automating.</h2>
+        <p>Open to opportunities and collaborations in AI &amp; automation engineering. Reach out and I'll usually respond within a day.</p>
+      </div>
+      <div class="stagger-group contact-links">
+        <a class="clink" href="mailto:adeeln454@gmail.com">adeeln454@gmail.com <span class="arrow">→</span></a>
+        <a class="clink" href="tel:+923165659775">+92-316-5659775 <span class="arrow">→</span></a>
+        <a class="clink" href="https://www.linkedin.com/in/adeel-naeem-952108267/" target="_blank" rel="noopener">LinkedIn <span class="arrow">→</span></a>
+        <a class="clink" href="https://github.com/AdeelNaeem44" target="_blank" rel="noopener">GitHub <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 Adeel Naeem</p>
+    <p>AI Automation Engineer</p>
+  </div>
+</footer>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Fallback avatar if profile.jpg hasn't been added yet
+  function handleImgError(img){
+    img.onerror = null;
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">'
+      + '<rect width="100%" height="100%" fill="#DCE3DA"/>'
+      + '<text x="50%" y="44%" font-family="IBM Plex Mono, monospace" font-size="72" fill="#23262A" text-anchor="middle" dominant-baseline="middle">AN</text>'
+      + '<text x="50%" y="60%" font-family="IBM Plex Mono, monospace" font-size="14" letter-spacing="1.5" fill="#5F7264" text-anchor="middle" dominant-baseline="middle">ADD PHOTO.JPG</text>'
+      + '</svg>';
+    img.src = 'data:image/svg+xml,' + encodeURIComponent(svg);
+  }
+
+  // Scroll-spy nav highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.navlinks a');
+  const spy = () => {
+    let current = '';
+    sections.forEach(sec => {
+      const top = sec.offsetTop - 120;
+      if (window.scrollY >= top) current = sec.getAttribute('id');
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  };
+  window.addEventListener('scroll', spy);
+  spy();
+
+  // Scroll reveal (single elements + staggered groups)
+  const revealEls = document.querySelectorAll('.reveal, .stagger-group');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+        if (entry.target.classList.contains('facts')) runCountUp(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Count-up numbers
+  function runCountUp(container){
+    const targets = container.querySelectorAll('[data-count]');
+    targets.forEach(el => {
+      const end = parseFloat(el.getAttribute('data-count'));
+      const suffix = el.getAttribute('data-suffix') || '';
+      const prefix = el.getAttribute('data-prefix') || '';
+      const comma = el.getAttribute('data-comma') === '1';
+      if (reduceMotion){
+        el.textContent = prefix + (comma ? end.toLocaleString() : end) + suffix;
+        return;
+      }
+      const duration = 1200;
+      const start = performance.now();
+      function tick(now){
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const val = Math.round(end * eased);
+        el.textContent = prefix + (comma ? val.toLocaleString() : val) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  // Card tilt + spotlight
+  if (!reduceMotion){
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        const y = e.clientY - r.top;
+        const rx = ((y / r.height) - 0.5) * -7;
+        const ry = ((x / r.width) - 0.5) * 7;
+        card.style.transform = `translateY(-4px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        card.style.setProperty('--mx', x + 'px');
+        card.style.setProperty('--my', y + 'px');
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+
+    // Magnetic buttons
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const r = btn.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width / 2) * 0.28;
+        const y = (e.clientY - r.top - r.height / 2) * 0.5;
+        btn.style.transform = `translate(${x}px, ${y}px)`;
+      });
+      btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+    });
+  }
+</script>
+
+</body>
+</html>
